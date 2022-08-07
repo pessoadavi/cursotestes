@@ -1,10 +1,12 @@
 package com.testes.apitestes.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.testes.apitestes.exceptions.DataIntegrityViolationException;
 import com.testes.apitestes.exceptions.ObjectNotFoundException;
 import com.testes.apitestes.model.dto.UserDTO;
 import com.testes.apitestes.model.entity.UserEntity;
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserEntity save(UserDTO user) {
+		checkEmail(user);
 		return userRepository.saveAndFlush(modelMapper.map(user, UserEntity.class));
 	}
 
@@ -33,10 +36,23 @@ public class UserServiceImpl implements UserService{
 	public List<UserEntity> saveAll(List<UserEntity> users) {
 		return userRepository.saveAllAndFlush(users);
 	}
+	
+	@Override
+	public UserEntity upddate(UserDTO user) {
+		checkEmail(user);
+		return userRepository.saveAndFlush(modelMapper.map(user, UserEntity.class));
+	}
 
 	@Override
 	public List<UserEntity> findAll() {
 		return userRepository.findAll();
+	}
+	
+	private void checkEmail(UserDTO user) {
+		Optional<UserEntity> result = userRepository.findByEmail(user.getEmail());
+		if (result.isPresent() && !result.get().getId().equals(user.getId())) {
+			throw new DataIntegrityViolationException("E-mail já cadastro. Informe um diferente.");
+		}
 	}
 
 }

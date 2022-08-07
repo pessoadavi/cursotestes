@@ -10,8 +10,11 @@ public interface UserService {
 	UserEntity findById(Integer id);
 	
 	UserEntity save(UserDTO user);
+
+	UserEntity upddate(UserDTO user);
 	
 	List<UserEntity> findAll();
 	
 	List<UserEntity> saveAll(List<UserEntity> users); 
+
 }
