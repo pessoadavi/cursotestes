@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public UserEntity findById(Integer id) {
-		return userRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found!!!"));
+		return userRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Usuário não encontrado."));
 	}
 
 	@Override
@@ -43,6 +43,12 @@ public class UserServiceImpl implements UserService{
 		return userRepository.saveAndFlush(modelMapper.map(user, UserEntity.class));
 	}
 
+	@Override
+	public void delete(Integer id) {
+		findById(id);
+		userRepository.deleteById(id);	
+	}
+	
 	@Override
 	public List<UserEntity> findAll() {
 		return userRepository.findAll();

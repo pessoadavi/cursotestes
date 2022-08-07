@@ -17,4 +17,5 @@ public interface UserService {
 	
 	List<UserEntity> saveAll(List<UserEntity> users); 
 
+	void delete(Integer id);
 }
