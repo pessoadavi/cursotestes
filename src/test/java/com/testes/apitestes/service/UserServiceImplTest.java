@@ -2,6 +2,7 @@ package com.testes.apitestes.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,8 @@ import com.testes.apitestes.repository.UserRepository;
 
 @SpringBootTest
 class UserServiceImplTest {
-
+	
+	private static final Integer INDEX	  = 0;
 	private static final Integer ID       = 1;
 	private static final String  NAME 	  = "Davi";
 	private static final String  PASSWORD = "123";
@@ -73,6 +75,21 @@ class UserServiceImplTest {
 			assertEquals("Usuário não encontrado.", e.getMessage());
 			assertEquals(ObjectNotFoundException.class, e.getClass());
 		}
+	}
+	
+	@Test
+	void WhenFindAllReturnAnListOfUsers() {
+		Mockito.when(repository.findAll()).thenReturn(List.of(user));
+		
+		List<UserEntity> response = service.findAll();
+		
+		assertNotNull(response);
+		assertEquals(1, response.size());
+		assertEquals(ID, response.get(INDEX).getId());
+		assertEquals(NAME, response.get(INDEX).getName());
+		assertEquals(EMAIL, response.get(INDEX).getEmail());
+		assertEquals(PASSWORD, response.get(INDEX).getPassword());
+		assertEquals(UserEntity.class, response.get(INDEX).getClass());
 	}
 
 	private void startUser() {
