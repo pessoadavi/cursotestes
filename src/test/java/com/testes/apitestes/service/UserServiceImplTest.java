@@ -4,15 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
-import org.apache.catalina.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.testes.apitestes.model.dto.UserDTO;
 import com.testes.apitestes.model.entity.UserEntity;
@@ -26,10 +25,10 @@ class UserServiceImplTest {
 	private static final String  PASSWORD = "123";
 	private static final String  EMAIL    = "davi@davi.com";
 	
-	@Mock 
+	@MockBean
 	private ModelMapper mapper;	
 
-	@Mock 
+	@MockBean 
 	private UserRepository repository;
 	
 	@InjectMocks 
@@ -52,7 +51,14 @@ class UserServiceImplTest {
 		
 		UserEntity response = service.findById(ID);
 		
+		assertNotNull(response);
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(EMAIL, response.getEmail());
+		assertEquals(PASSWORD, response.getPassword());
 		assertEquals(UserEntity.class, response.getClass());
+		
+		
 	}
 
 	private void startUser() {

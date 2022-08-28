@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.testes.apitestes.exceptions.DataIntegrityViolationException;
@@ -15,11 +16,10 @@ import com.testes.apitestes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 
-	private final ModelMapper modelMapper;
-	private final UserRepository userRepository;
+	private @Autowired ModelMapper modelMapper;
+	private @Autowired UserRepository userRepository;
 	
 	@Override
 	public UserEntity findById(Integer id) {
