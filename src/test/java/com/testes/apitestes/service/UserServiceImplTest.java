@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.testes.apitestes.exceptions.ObjectNotFoundException;
 import com.testes.apitestes.model.dto.UserDTO;
 import com.testes.apitestes.model.entity.UserEntity;
 import com.testes.apitestes.repository.UserRepository;
@@ -24,6 +25,7 @@ class UserServiceImplTest {
 	private static final String  NAME 	  = "Davi";
 	private static final String  PASSWORD = "123";
 	private static final String  EMAIL    = "davi@davi.com";
+	private static final String  MESSAGE  = "Usuário não encontrado.";
 	
 	@MockBean
 	private ModelMapper mapper;	
@@ -59,6 +61,18 @@ class UserServiceImplTest {
 		assertEquals(UserEntity.class, response.getClass());
 		
 		
+	}
+	
+	@Test
+	void WhenFindByIdReturnAnObjectNotFoundException() {
+		Mockito.when(repository.findById(Mockito.anyInt())).thenThrow(new ObjectNotFoundException(MESSAGE));
+		
+		try {
+			service.findById(ID);
+		} catch (Exception e) {
+			assertEquals("Usuário não encontrado.", e.getMessage());
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+		}
 	}
 
 	private void startUser() {
