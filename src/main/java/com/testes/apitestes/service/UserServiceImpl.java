@@ -13,8 +13,6 @@ import com.testes.apitestes.model.dto.UserDTO;
 import com.testes.apitestes.model.entity.UserEntity;
 import com.testes.apitestes.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
 public class UserServiceImpl implements UserService{
 

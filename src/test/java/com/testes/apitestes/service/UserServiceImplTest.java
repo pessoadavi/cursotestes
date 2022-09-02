@@ -1,6 +1,7 @@
 package com.testes.apitestes.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
 
 import java.util.List;
 import java.util.Optional;
@@ -131,8 +132,8 @@ class UserServiceImplTest {
 		assertNotNull(response);
 		assertEquals(ID, response.getId());
 		assertEquals(NAME, response.getName());
-		assertEquals(EMAIL, response.getEmail());
 		assertEquals(PASSWORD, response.getPassword());
+		assertEquals(EMAIL, response.getEmail());
 		assertEquals(UserEntity.class, response.getClass());
 	}
 	
@@ -147,6 +148,25 @@ class UserServiceImplTest {
 			assertEquals(DataIntegrityViolationException.class, e.getClass());
 			assertEquals("E-mail já cadastro. Informe um diferente.", e.getMessage());
 		}		
+	}
+	
+	@Test
+	void deleteWithiSuccess() {
+		Mockito.when(repository.findById(Mockito.anyInt())).thenReturn(optionalUser);
+		Mockito.doNothing().when(repository).deleteById(Mockito.anyInt());
+		service.delete(ID);
+		Mockito.verify(repository, times(1)).deleteById(Mockito.anyInt());
+	}
+	
+	@Test
+	void deleteWithObjectNotFoundException() {
+		Mockito.when(repository.findById(Mockito.anyInt())).thenThrow(new ObjectNotFoundException(MESSAGE));
+		try {
+			service.delete(ID);
+		} catch (Exception e) {
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+			assertEquals(MESSAGE, e.getMessage());
+		}
 	}
 	
 	private void startUser() {

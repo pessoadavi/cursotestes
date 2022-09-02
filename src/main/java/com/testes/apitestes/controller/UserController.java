@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +23,11 @@ import com.testes.apitestes.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
-	private final UserService userService;
-	private final ModelMapper modelMapper;
+	private @Autowired UserService userService;
+	private @Autowired ModelMapper modelMapper;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> findById(@PathVariable Integer id){
