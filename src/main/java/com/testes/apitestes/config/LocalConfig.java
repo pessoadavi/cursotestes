@@ -20,9 +20,9 @@ public class LocalConfig {
 	
 	@Bean
 	public void startDB() {
-//		UserEntity user1 = new UserEntity(1, "Davi", "davi@davi.com", "123");
-//		UserEntity user2 = new UserEntity(2, "Rafa", "rafa@rafa.com", "123");
-//	
-//		userService.saveAll(List.of(user1, user2));
+		UserEntity user1 = new UserEntity(1, "Davi", "davi@davi.com", "123");
+		UserEntity user2 = new UserEntity(2, "Rafa", "rafa@rafa.com", "123");
+	
+		userService.saveAll(List.of(user1, user2));
 	}
 }

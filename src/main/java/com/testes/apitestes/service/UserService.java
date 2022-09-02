@@ -11,7 +11,7 @@ public interface UserService {
 	
 	UserEntity save(UserDTO user);
 
-	UserEntity upddate(UserDTO user);
+	UserEntity update(UserDTO user);
 	
 	List<UserEntity> findAll();
 	

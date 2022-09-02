@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public UserEntity upddate(UserDTO user) {
+	public UserEntity update(UserDTO user) {
 		checkEmail(user);
 		return userRepository.saveAndFlush(modelMapper.map(user, UserEntity.class));
 	}

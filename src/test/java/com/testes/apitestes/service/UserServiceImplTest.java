@@ -113,18 +113,42 @@ class UserServiceImplTest {
 	void WhenCreateUserThenReturnAnDataIntegrityViolationException() {
 		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(optionalUser);
 		
-	try {
-		optionalUser.get().setId(2);
-		service.save(userDto);	
-	} catch (Exception e) {
-		assertEquals(DataIntegrityViolationException.class, e.getClass());
-		assertEquals("E-mail já cadastro. Informe um diferente.", e.getMessage());
-	}		
-		
-		
-		
+		try {
+			optionalUser.get().setId(2);
+			service.save(userDto);	
+		} catch (Exception e) {
+			assertEquals(DataIntegrityViolationException.class, e.getClass());
+			assertEquals("E-mail já cadastro. Informe um diferente.", e.getMessage());
+		}		
 	}
-
+	
+	@Test
+	void WhenUpdateUserThenReturnSuccess() {
+		Mockito.when(repository.saveAndFlush(Mockito.any())).thenReturn(user);
+		
+		UserEntity response = service.update(userDto);
+		
+		assertNotNull(response);
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(EMAIL, response.getEmail());
+		assertEquals(PASSWORD, response.getPassword());
+		assertEquals(UserEntity.class, response.getClass());
+	}
+	
+	@Test
+	void WhenUpdateUserThenReturnAnDataIntegrityViolationException() {
+		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(optionalUser);
+		
+		try {
+			optionalUser.get().setId(2);
+			service.save(userDto);	
+		} catch (Exception e) {
+			assertEquals(DataIntegrityViolationException.class, e.getClass());
+			assertEquals("E-mail já cadastro. Informe um diferente.", e.getMessage());
+		}		
+	}
+	
 	private void startUser() {
 		user = new UserEntity(ID, NAME, EMAIL, PASSWORD);
 		userDto = new UserDTO(ID, NAME, EMAIL, PASSWORD);
