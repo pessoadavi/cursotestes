@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.testes.apitestes.exceptions.DataIntegrityViolationException;
 import com.testes.apitestes.exceptions.ObjectNotFoundException;
 import com.testes.apitestes.model.dto.UserDTO;
 import com.testes.apitestes.model.entity.UserEntity;
@@ -90,6 +91,38 @@ class UserServiceImplTest {
 		assertEquals(EMAIL, response.get(INDEX).getEmail());
 		assertEquals(PASSWORD, response.get(INDEX).getPassword());
 		assertEquals(UserEntity.class, response.get(INDEX).getClass());
+	}
+	
+	@Test
+	void WhenCreateUserThenReturnSuccess() {
+		Mockito.when(repository.saveAndFlush(Mockito.any())).thenReturn(user);
+		
+		UserEntity response = service.save(userDto);
+		
+		assertNotNull(response);
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(EMAIL, response.getEmail());
+		assertEquals(PASSWORD, response.getPassword());
+		assertEquals(UserEntity.class, response.getClass());
+		
+		
+	}
+	
+	@Test
+	void WhenCreateUserThenReturnAnDataIntegrityViolationException() {
+		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(optionalUser);
+		
+	try {
+		optionalUser.get().setId(2);
+		service.save(userDto);	
+	} catch (Exception e) {
+		assertEquals(DataIntegrityViolationException.class, e.getClass());
+		assertEquals("E-mail já cadastro. Informe um diferente.", e.getMessage());
+	}		
+		
+		
+		
 	}
 
 	private void startUser() {
