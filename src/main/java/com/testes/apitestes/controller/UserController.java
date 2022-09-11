@@ -20,8 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.testes.apitestes.model.dto.UserDTO;
 import com.testes.apitestes.service.UserService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
